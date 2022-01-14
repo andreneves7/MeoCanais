@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class MyAdapter (val listaCanais: List<String>) : RecyclerView.Adapter<MyAdapter.ExampleViewHolder>()  {
+class MyAdapter (val listaCanais: List<Canais>) : RecyclerView.Adapter<MyAdapter.ExampleViewHolder>()  {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExampleViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.custom_card, parent, false)
@@ -20,7 +20,8 @@ class MyAdapter (val listaCanais: List<String>) : RecyclerView.Adapter<MyAdapter
     override fun onBindViewHolder(holder: ExampleViewHolder, position: Int) {
         val currentItem = listaCanais[position]
 
-        holder.nomeCanal.text = currentItem
+        holder.nomeCanal.text = currentItem.Title
+//        holder.nomeCanal.text = "ola"
 //        holder.programaAtual.text = currentItem.
 //        holder.programaNext.text = currentItem.stock
 

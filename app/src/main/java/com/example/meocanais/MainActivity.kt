@@ -7,6 +7,7 @@ import android.widget.Adapter
 import android.widget.ArrayAdapter
 import android.widget.ListView
 import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import retrofit2.Call
 import retrofit2.Callback
@@ -15,12 +16,20 @@ import retrofit2.Response
 class MainActivity : AppCompatActivity() {
 
     lateinit var recyclerView : RecyclerView
+    private val listaItem = ArrayList<Canais>()
+    private lateinit var MyAdapter: MyAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+
+
         recyclerView = findViewById(R.id.recycleViewCanais)
+
+        val layoutManager = LinearLayoutManager(this)
+        recyclerView.layoutManager = layoutManager
+        MyAdapter = MyAdapter(listaItem)
 
         val clientesService = ServiceBuilder.buildService(EndPoints::class.java)
         val requestCall = clientesService.getChannels("json", "AND",
@@ -32,11 +41,11 @@ class MainActivity : AppCompatActivity() {
                 if (response.isSuccessful) {
                     val itemList = response.body()!!.canalList
 
-                    var listaFiltradaItem: MutableList<String> = ArrayList()
+                    var listaFiltradaItem: MutableList<Canais> = ArrayList()
 
                     for(i in itemList){
 
-                        listaFiltradaItem.add(i.Title)
+                        listaFiltradaItem.add(i)
 
                         Log.d("endpoint", "${i.Title}")
 
