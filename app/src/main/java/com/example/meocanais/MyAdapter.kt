@@ -4,8 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.squareup.picasso.Picasso
 
 class MyAdapter (val listaCanais: List<Canais>) : RecyclerView.Adapter<MyAdapter.ExampleViewHolder>()  {
 
@@ -21,7 +23,9 @@ class MyAdapter (val listaCanais: List<Canais>) : RecyclerView.Adapter<MyAdapter
         val currentItem = listaCanais[position]
 
         holder.nomeCanal.text = currentItem.Title
-//        holder.nomeCanal.text = "ola"
+        Picasso.get().
+        load("http://213.13.23.69/wp/cdn-images.online.meo.pt/eemstb/ImageHandler.ashx?evTitle=${currentItem.capa}&chCallLetter=${currentItem.Title}&profile=16_9&width=320").
+            into(holder.capa)
         holder.programaAtual.text = currentItem.progNow
         holder.programaNext.text = currentItem.progNext
 
@@ -44,6 +48,7 @@ class MyAdapter (val listaCanais: List<Canais>) : RecyclerView.Adapter<MyAdapter
         val nomeCanal: TextView = itemView.findViewById(R.id.labelCanal)
         val programaNext: TextView = itemView.findViewById(R.id.labelProgramaNext)
         val programaAtual: TextView = itemView.findViewById(R.id.labelProgramaIN)
+        var capa : ImageView = itemView.findViewById(R.id.imgCapa)
     }
 
 

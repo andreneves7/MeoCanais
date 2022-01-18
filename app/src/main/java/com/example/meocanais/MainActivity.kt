@@ -6,6 +6,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.squareup.picasso.Picasso
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -30,6 +31,7 @@ class MainActivity : AppCompatActivity() {
 
 
         recyclerView = findViewById(R.id.recycleViewCanais)
+        recyclerView.setHasFixedSize(true)
 
         val layoutManager = LinearLayoutManager(this)
         recyclerView.layoutManager = layoutManager
@@ -48,7 +50,7 @@ class MainActivity : AppCompatActivity() {
 
 
                     for(i in itemList){
-
+                        Log.d("endpoint", "${i.Title}")
 
         BuscaProgramas(i)
 
@@ -81,19 +83,23 @@ class MainActivity : AppCompatActivity() {
                     val controlo = i.Title
                     var index = 1
                     var atual = ""
+                    var imagem = ""
 
-                        Log.d("endpoint", "${i.Title}")
+                        Log.d("endpoint", "i = ${i.Title}")
 
                     for(a in itemList){
 
-                        if (controlo == i.Title && index == 2){
-                            listaFiltradaItem.add(Canais(i.Title,atual, a.Title))
+                        if (controlo == i.Title && index == 2)
+                        {
+
+                            listaFiltradaItem.add(Canais(i.Title,atual, a.Title,imagem ))
                         }
                         else
                         {
                             atual = a.Title
 
-
+                            imagem = CarregarCapa(atual)
+                            Log.d("img", "$imagem")
 
                             index ++
                         }
@@ -101,7 +107,7 @@ class MainActivity : AppCompatActivity() {
 
 
 
-                        Log.d("endpoint", "a= ${a.Title}")
+//                        Log.d("endpoint", "a= ${a.Title}")
 
                     }
                             recyclerView.adapter = MyAdapter(listaFiltradaItem)
@@ -117,6 +123,27 @@ class MainActivity : AppCompatActivity() {
             }
 
         })
+    }
+
+    private fun CarregarCapa(atual: String) :String {
+
+        var t = ""
+
+        if (atual.contains("-"))
+        {
+
+            t = atual.replace("-", "+-+").replace(".", ".+")
+            Log.d("ola", "$t")
+
+
+        }
+        else
+        {
+            t = atual
+        }
+
+        return  t
+
     }
 
 
