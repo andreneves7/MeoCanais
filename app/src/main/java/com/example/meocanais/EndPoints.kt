@@ -21,6 +21,11 @@ interface EndPoints {
                     @Query("inlinecount" ) inlinecout: String,
                     @Query("skip" ) skip: Int): Call<CanaisList>
 
+    @GET("/Program/v9/Programs/NowAndNextLiveChannelPrograms?")
+    fun getProg(@Query("\$filter" ) filter: String, @Query("UserAgent" ) UserAgent: String,
+                @Query("orderby" ) orderby: String
+             ): Call<ProgramaList>
+
 
 //    @GET("/api/item/{id}")
 //    fun getItem(@Path("id") id: String): Call<List<Canais>>

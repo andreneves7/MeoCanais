@@ -22,8 +22,8 @@ class MyAdapter (val listaCanais: List<Canais>) : RecyclerView.Adapter<MyAdapter
 
         holder.nomeCanal.text = currentItem.Title
 //        holder.nomeCanal.text = "ola"
-//        holder.programaAtual.text = currentItem.
-//        holder.programaNext.text = currentItem.stock
+        holder.programaAtual.text = currentItem.progNow
+        holder.programaNext.text = currentItem.progNext
 
 //        holder.itemView.setOnClickListener{
 //
