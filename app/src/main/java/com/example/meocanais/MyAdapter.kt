@@ -24,7 +24,7 @@ class MyAdapter (val listaCanais: List<Canais>) : RecyclerView.Adapter<MyAdapter
 
         holder.nomeCanal.text = currentItem.Title
         Picasso.get().
-        load("http://213.13.23.69/wp/cdn-images.online.meo.pt/eemstb/ImageHandler.ashx?evTitle=${currentItem.capa}&chCallLetter=${currentItem.Title}&profile=16_9&width=320").
+        load("http://213.13.23.69/wp/cdn-images.online.meo.pt/eemstb/ImageHandler.ashx?evTitle=${currentItem.capa}&chCallLetter=${currentItem.CallLetter}&profile=16_9&width=320").
             into(holder.capa)
         holder.programaAtual.text = currentItem.progNow
         holder.programaNext.text = currentItem.progNext

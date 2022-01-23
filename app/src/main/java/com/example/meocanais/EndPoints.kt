@@ -13,13 +13,14 @@ interface EndPoints {
 //    ): Call<ResponseBody>
 
 
-    @GET("/catalog/v9/Channels?")
-    fun getChannels(@Query("format" ) format: String,
+    @GET("/catalog/v9/Channels")
+    fun getChannels(@Query
+                        ("format" ) format: String,
                     @Query("UserAgent" ) UserAgent: String,
                     @Query("filter" ) filter: String,
                     @Query("orderby" ) orderby: String,
                     @Query("inlinecount" ) inlinecout: String,
-                    @Query("skip" ) skip: Int): Call<CanaisList>
+                    @Query("\$skip" ) skip: Int): Call<CanaisList>
 
     @GET("/Program/v9/Programs/NowAndNextLiveChannelPrograms?")
     fun getProg(@Query("\$filter" ) filter: String, @Query("UserAgent" ) UserAgent: String,

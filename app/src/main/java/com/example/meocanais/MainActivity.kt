@@ -6,7 +6,6 @@ import android.util.Log
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.squareup.picasso.Picasso
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -23,6 +22,13 @@ class MainActivity : AppCompatActivity() {
 
     val clientesService = ServiceBuilder.buildService(EndPoints::class.java)
 
+    var endHasBeenReached = false
+    var totalItemCount = 0
+    var lastVisible = 0
+    var frist = 0
+
+    var listaPronta = false
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,10 +43,72 @@ class MainActivity : AppCompatActivity() {
         recyclerView.layoutManager = layoutManager
         MyAdapter = MyAdapter(listaItem)
 
+//        val atual = "Traz Prá Frente T6 - Ep.33"
+//
+//        val imagem = CarregarCapa(atual)
+
+
+
+        BuscaCanais()
+
+        Log.d("a", "$listaPronta")
+
+        lastVisible = layoutManager.findLastVisibleItemPosition()
+        frist = layoutManager.findFirstVisibleItemPosition()
+
+
+
+        Log.d("fim" ,"$lastVisible")
+
+//        BuscaProgramas(frist,lastVisible)
+
+
+
+
+
+        Log.d("a", "$listaPronta")
+        Log.d("fim" ,"teste = $frist")
+
+        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+//                val layoutManager = LinearLayoutManager::class.java.cast(recyclerView.layoutManager)
+                totalItemCount = layoutManager.itemCount
+                lastVisible = layoutManager.findLastVisibleItemPosition()
+                frist = layoutManager.findFirstVisibleItemPosition()
+                Log.d("fim" ,"$lastVisible")
+                Log.d("fim" ,"ola = $frist")
+
+                endHasBeenReached = lastVisible + 2 >= totalItemCount
+//                Log.d("fim" ,"$endHasBeenReached")
+                    Log.d("fim" ,"$lastVisible")
+                    Log.d("fim" ,"ola = $frist")
+                if (totalItemCount > 0 && endHasBeenReached) {
+                    Log.d("fim" ,"$totalItemCount")
+
+                    BuscaCanais()
+
+                }
+
+            }
+        })
+
+    }
+
+    private  fun BuscaCanais(){
+
+        var a : Int = listaFiltradaItem.count()
 
         val requestCall = clientesService.getChannels("json", "AND",
-            "substringof%28%27MEO_Mobile%27%2CAvailableOnChannels%29%20and%20IsAdult%20eq%20false",
-        "ChannelPosition%20asc", "allpages", 0)
+            "substringof('MEO_Mobile'2CAvailableOnChannels) and IsAdult eq false",
+            "ChannelPosition asc", "allpages", a)
+
+        var atual = ""
+        var imagem = ""
+
+        Log.d("a", "${requestCall.request().url()}")
+
+        Log.d("lista", "${listaFiltradaItem.count()}")
 
         requestCall.enqueue(object : Callback<CanaisList> {
             override fun onResponse(call: Call<CanaisList>, response: Response<CanaisList>) {
@@ -52,25 +120,33 @@ class MainActivity : AppCompatActivity() {
                     for(i in itemList){
                         Log.d("endpoint", "${i.Title}")
 
-        BuscaProgramas(i)
+
+//                        listaFiltradaItem.add(Canais(i.CallLetter,i.Title,atual, atual,imagem ))
+                        BuscaProgramas(i)
+
 
                     }
+//                    recyclerView.adapter = MyAdapter(listaFiltradaItem)
+
                 } else {
                     Toast.makeText(this@MainActivity, "Erro a carregar os itens", Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun onFailure(call: Call<CanaisList>, t: Throwable) {
-//                Toast.makeText(this@MainActivity, "Erro: $t", Toast.LENGTH_LONG).show()
+                Toast.makeText(this@MainActivity, "Erro: $t", Toast.LENGTH_LONG).show()
                 Log.d("endpoint", "$t")
             }
 
         })
 
+
+
     }
 
     private fun BuscaProgramas(i: Canais) {
-        val requestProg = clientesService.getProg( "CallLetter eq '${i.Title}'","AND",
+
+        val requestProg = clientesService.getProg( "CallLetter eq '${i.CallLetter}'","AND",
             "StartDate%20asc")
 
 
@@ -85,14 +161,16 @@ class MainActivity : AppCompatActivity() {
                     var atual = ""
                     var imagem = ""
 
-                        Log.d("endpoint", "i = ${i.Title}")
+                        Log.d("endpointi", "i = ${i.Title}")
 
                     for(a in itemList){
+
+                        Log.d("endpointi", "a = ${a.Title}")
 
                         if (controlo == i.Title && index == 2)
                         {
 
-                            listaFiltradaItem.add(Canais(i.Title,atual, a.Title,imagem ))
+                            listaFiltradaItem.add(Canais(i.CallLetter,i.Title,atual,a.Title,imagem ))
                         }
                         else
                         {
@@ -107,7 +185,7 @@ class MainActivity : AppCompatActivity() {
 
 
 
-//                        Log.d("endpoint", "a= ${a.Title}")
+//                        Log.d("endpointa", "a= ${listaFiltradaItem[index].Title}")
 
                     }
                             recyclerView.adapter = MyAdapter(listaFiltradaItem)
@@ -123,6 +201,8 @@ class MainActivity : AppCompatActivity() {
             }
 
         })
+
+
     }
 
     private fun CarregarCapa(atual: String) :String {

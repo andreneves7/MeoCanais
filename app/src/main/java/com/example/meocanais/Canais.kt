@@ -5,11 +5,11 @@ import com.squareup.picasso.RequestCreator
 
 
 class Canais(
-//    val Id: Int,
+    val CallLetter: String,
     val Title: String,
-    val progNow: String,
-    val progNext: String,
-    val capa: String
+    var progNow: String,
+    var progNext: String,
+    var capa: String
              ) {
 
 }
