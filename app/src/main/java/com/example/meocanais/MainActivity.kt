@@ -135,7 +135,7 @@ class MainActivity : AppCompatActivity() {
 
             override fun onFailure(call: Call<CanaisList>, t: Throwable) {
                 Toast.makeText(this@MainActivity, "Erro: $t", Toast.LENGTH_LONG).show()
-                Log.d("endpoint", "$t")
+//                Log.d("endpoint", "$t")
             }
 
         })
